@@ -1,0 +1,19 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 10
+    commands:
+      - npm install --save-dev @angular-devkit/build-angular
+      - npm install -g @angular/cli@9.1.0
+  build:
+    commands:
+      - ng build
+  post_build:
+    commands:
+      - aws s3 sync dist/ s3://testing-agular-deploy --delete
+artifacts:
+  type: zip
+  base-directory: dist
+  files:
+    - '**/*'
